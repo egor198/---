@@ -19,6 +19,8 @@ window.fill(back)
 list = [-3, -2, -1, 1, 2, 3]
 dy = 3
 dx = 3
+dy1 = 2.6
+dx1 = 2.6
 score = 0
 score1 = 0
 
@@ -47,7 +49,7 @@ class Player(GameSprite):
             self.rect.y -= self.speed
         if keys_pressed[K_DOWN] and self.rect.y < 350:
             self.rect.y += self.speed
-        
+
     def update_r(self):
         keys_pressed = key.get_pressed()
         if keys_pressed[K_w] and self.rect.y > 0:
@@ -55,10 +57,10 @@ class Player(GameSprite):
         if keys_pressed[K_s] and self.rect.y < 350:
             self.rect.y += self.speed
 
-player1 = Player("player.png", 0, 0, 3, 50, 100)
-player2 = Player("player.png", 650, 0, 3, 50, 100)
+player1 = Player("player.png", 0, 0, 5, 50, 100)
+player2 = Player("player.png", 650, 0, 5, 50, 100)
 ball = GameSprite("ball.png", 450, 300, 4, 50, 50)
-
+ball1 = GameSprite("ball.png", 250, 200, 4, 50, 50)
 while game:
     window.fill(back)
     player1.reset()
@@ -74,32 +76,68 @@ while game:
         dy *= -1
     if sprite.collide_rect(player1, ball) :
         dx *= -1
-        dx += 0.4
-        dy += 0.4
+        dx += 1
+        dy += 1
     if sprite.collide_rect(player2, ball) :
         dx *= -1
-        dx += 0.4
-        dy += 0.4
+        dx += -1
+        dy += -1
 
     if ball.rect.x >= 650:
         score += 1
         #sleep(2)
-        dy = randint(1, 3)
-        dx = randint(-3, 3)
+        dy = -3
+        dx = -3
         ball.rect.x = 300
         ball.rect.y = 100
     if ball.rect.x <= 0:
         score1 += 1
         #sleep(2)
-        dy = randint(1, 3)
-        dx = randint(-3, 3)
+        dy = 3
+        dx = 3
         ball.rect.x = 300
         ball.rect.y = 100
+    
+
+   
+    if score + score1 >= 10:
+        ball1.reset()
+        ball1.rect.y += dy1
+        ball1.rect.x += dx1
+
+    if ball1.rect.y >= 400:
+        dy1 *= -1
+    if ball1.rect.y <= 0:
+        dy1 *= -1
+    if sprite.collide_rect(player1, ball1) :
+        dx1 *= -1
+        dx1 += 1
+        dy1 += 1
+    if sprite.collide_rect(player2, ball1) :
+        dx1 *= -1
+        dx1 += -1
+        dy1 += -1
+
+    if ball1.rect.x >= 650:
+        score += 1
+        #sleep(2)
+        dy1 = -3.4
+        dx1 = -3.8
+        ball1.rect.x = 300
+        ball1.rect.y = 100
+    if ball1.rect.x <= 0:
+        score1 += 1
+        #sleep(2)
+        dy1 = 3.4
+        dx1 = 2
+        ball1.rect.x = 300
+        ball1.rect.y = 100
+
 
     text = font2.render("Счет:" + str(score), 1, (0, 255, 0))
     text2 = font2.render("Счет:" + str(score1), 1, (0, 255, 0))   
     window.blit(text, (10, 20))
-    window.blit(text2, (620, 20))
+    window.blit(text2, (610, 20))
 
 
 
